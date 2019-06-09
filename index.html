@@ -1,0 +1,122 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <title>Brian Nguyen's Blog</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/uikit.min.css" />
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+
+</head>
+
+<body>
+    <nav class="uk-navbar-container uk-margin" uk-navbar style="background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);">
+        <div class="uk-navbar-center">
+            <a style="color: #fafafa;" class="uk-navbar-item uk-logo" href="#">Brian Nguyen's Blog</a>
+        </div>
+    </nav>
+
+    <div class="uk-card uk-card-default uk-card-large uk-card-body uk-width-2-3@m uk-width-5-6 uk-align-center">
+            <article class="uk-article">
+                <h2 class="uk-article-title">Unix Filters</h2>
+                <p class="uk-article-meta">Written on 10 June 2019</p>
+                <p>Filters are programs that transforms a data stream. On Unix, filters read text from a file object, transform the text stream and write the text to standard output.</p>
+                <p>Shell I/O redirection: <code>filter &lt; a &gt; b</code> makes <code>a</code> the the input to the <code>filter</code> and <code>b</code> the output.</p>
+                <p>Shell pipelines: <code>filter1 | filter2 | ... | filterN</code></p>
+                <p>Filter command line arguments: <code>filter data1 - data2</code> read from data1, stdin, data2. Options prefixed with <code>-</code> with a short and long form e.g. <code>-v, -verbose</code> short form options can be combined e.g. <code>-av, -a -v</code>. All command-line options can usually be found with <code>-help</code>, <code>-?</code>, or <code>man -k keyword</code>.</p>
+                
+                <p>Useful filters</p>
+                <ul class="uk-list uk-list-bullet">
+                    <li>cat: identity filter</li>
+                    <li>wc: word counter can count characters words and lines</li>
+                    <li>tr: transliterate characters, char-by-char mapping e.g. Caesar cipher <code>tr 'a-zA-z' 'b-zaB-ZA' &lt; text</code></li>
+                    <li>head/tail: select lines</li>
+                    <li>grep: select lines matching a pattern (<code>grep</code> uses limited POSIX, <code>egrep</code> uses regex, <code>fgrep</code> finds fixed strings, and <code>grep -P</code> uses Perl-like regex)
+                        <ul class="uk-list uk-list-bullet">
+                            <li>Repetition: Zero or more - <code>p*</code>, one or more - <code>p+</code>, zero or one - <code>p?</code></li>
+                            <li>Union: <code>pattern_1 | pattern_2</code></li>
+                            <li>Reserved characters can be ignored by prefixing <code>\</code></li>
+                            <li>head/tail: select lines</li>
+                            <li>Any character: <code>.</code></li>
+                            <li>One of a list of characters: <code>[aeiou]</code></li>
+                            <li>Inverting matches: <code>[^aeiou]</code></li>
+                            <li>Ranges: <code>[first-last]</code></li>
+                            <li>Anchors: start of line - <code>^</code> end of line - <code>$</code></li>
+                        </ul>
+                    </li>
+                    <li>cut: vertical slice</li>
+                    <li>paste: combine files</li>
+                    <li>join: database operator</li>
+                    <li>sort: </li>
+                    <li>uniq: remove or count duplicates</li>
+                    <li>xargs: commands with arguments from standard input</li>
+                    <li>sed: stream editor</li>
+                    <li>find: file search</li>
+                </ul>
+
+            </article>
+        </div>
+
+    <div class="uk-card uk-card-default uk-card-large uk-card-body uk-width-2-3@m uk-width-5-6 uk-align-center">
+        <article class="uk-article">
+            <h2 class="uk-article-title">Input/Output Functions</h2>
+            <p class="uk-article-meta">Written on 10 June 2019</p>
+            <p>In the first week I explored the use of input/output functions. By making a simple <code>cat</code> like function using different i/o functions in the standard i/o library. I got more familiar with use of the Unix Programmer manual, the COMP1521 workflow and simple performance analysis.</p>
+            <q>Unix/Linux has a large number of useful commands which act as filters and read an input byte- or character-stream, and copy it to an output byte- or character-stream, generally with some changes.</q>
+            <br/><br/>
+            <q>The simplest filter is the cat(1) command, which is effectively the identity filter: it copies standard input to standard output, without making any changes at all</q>
+
+            <p class="uk-text-bold">Implementation</p>
+
+            <p>For the first three, I used while loops to iterate through the file object until end of file and wrote to standard output with the appropriate functions.</p>
+
+            <p>Using <code>fscanf</code> and <code>fprintf</code></p>
+            
+            <pre class="c" style="font-family:monospace;"><span style="color: #b1b100;">while</span> <span style="color: #009900;">&#40;</span><span style="color: #000066;">fscanf</span><span style="color: #009900;">&#40;</span>input<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;%c&quot;</span><span style="color: #339933;">,</span> <span style="color: #339933;">&amp;</span>i<span style="color: #009900;">&#41;</span> <span style="color: #339933;">!=</span> EOF <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #000066;">fprintf</span><span style="color: #009900;">&#40;</span>output<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;%c&quot;</span><span style="color: #339933;">,</span> i<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span></pre>
+
+            <p>Using <code>fgetc</code> and <code>fputc</code></p>
+            
+<pre class="c" style="font-family:monospace;"><span style="color: #993333;">char</span> i <span style="color: #339933;">=</span> <span style="color: #000066;">fgetc</span><span style="color: #009900;">&#40;</span>input<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #b1b100;">while</span> <span style="color: #009900;">&#40;</span>i <span style="color: #339933;">!=</span> EOF<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #000066;">fputc</span><span style="color: #009900;">&#40;</span>i<span style="color: #339933;">,</span> output<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    i <span style="color: #339933;">=</span> <span style="color: #000066;">fgetc</span><span style="color: #009900;">&#40;</span>input<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span></pre>
+
+            <p>Using <code>fgets</code> and <code>fputs</code></p>
+
+<pre class="c" style="font-family:monospace;"><span style="color: #993333;">char</span> string<span style="color: #009900;">&#91;</span>BUFSIZ<span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span>
+<span style="color: #b1b100;">while</span> <span style="color: #009900;">&#40;</span><span style="color: #000066;">fgets</span><span style="color: #009900;">&#40;</span>string<span style="color: #339933;">,</span> BUFSIZ<span style="color: #339933;">,</span> input<span style="color: #009900;">&#41;</span> <span style="color: #339933;">!=</span> NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #000066;">fputs</span><span style="color: #009900;">&#40;</span>string<span style="color: #339933;">,</span> output<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span></pre>
+
+            <p>I was quite lucky that my first tests using <code>time</code> showed that <code>cat3.c</code> was the fastest, because I didn't double check the result. The results of <code>time</code> can vary so when you do performance analysis in general you should have a decently large same size of times. So all that was left of <code>cat4.c</code> was to write a <code>main</code> function that reads command line arguments.</p>
+
+<pre class="c" style="font-family:monospace;"><span style="color: #993333;">int</span> main <span style="color: #009900;">&#40;</span><span style="color: #993333;">int</span> argc<span style="color: #339933;">,</span> <span style="color: #993333;">char</span> <span style="color: #339933;">*</span>argv<span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>argc <span style="color: #339933;">==</span> <span style="color: #0000dd;">1</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        copy <span style="color: #009900;">&#40;</span>stdin<span style="color: #339933;">,</span> stdout<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #b1b100;">for</span> <span style="color: #009900;">&#40;</span><span style="color: #993333;">int</span> i <span style="color: #339933;">=</span> <span style="color: #0000dd;">1</span><span style="color: #339933;">;</span> i <span style="color: #339933;">&lt;</span> argc<span style="color: #339933;">;</span> i<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+            FILE <span style="color: #339933;">*</span>temp <span style="color: #339933;">=</span> <span style="color: #000066;">fopen</span><span style="color: #009900;">&#40;</span>argv<span style="color: #009900;">&#91;</span>i<span style="color: #009900;">&#93;</span><span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;r&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>temp <span style="color: #339933;">!=</span> NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                copy<span style="color: #009900;">&#40;</span>temp<span style="color: #339933;">,</span> stdout<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                <span style="color: #000066;">fclose</span><span style="color: #009900;">&#40;</span>temp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;Can't read %s<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">,</span> argv<span style="color: #009900;">&#91;</span>i<span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">&#125;</span>
+        <span style="color: #009900;">&#125;</span>
+    <span style="color: #009900;">&#125;</span>
+    <span style="color: #b1b100;">return</span> EXIT_SUCCESS<span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span></pre>
+
+            <p class="uk-text-bold">Testing</p>
+
+            <p>I used the <code>make</code> utility instead of compiling with <code>dcc</code> or <code>gcc</code> and using the <code>check</code> script instead of the <code>autotest</code> script.</p>
+
+        </article>
+    </div>
+</body>
+</html>
