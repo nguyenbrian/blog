@@ -8,17 +8,15 @@
     <link rel="stylesheet" href="css/uikit.min.css" />
     <script src="js/uikit.min.js"></script>
     <script src="js/uikit-icons.min.js"></script>
-
+    <link href="https://fonts.googleapis.com/css?family=Karla:400,700|Rubik:700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <nav class="uk-navbar-container uk-margin" uk-navbar style="background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);">
-        <div class="uk-navbar-center">
-            <a style="color: #fafafa;" class="uk-navbar-item uk-logo" href="#">Brian Nguyen's Blog</a>
-        </div>
-    </nav>
-
-    <div class="uk-card uk-card-default uk-card-large uk-card-body uk-width-2-3@m uk-width-5-6 uk-align-center">
+    <div class="uk-padding">
+        <h1 style="font-size: 1.5rem; color: #606666;">Brian Nguyen's Blog</h1>
+    </div>
+    <div>
+        <div class="uk-card uk-card-default uk-card-large uk-card-body uk-width-2-3@m uk-width-5-6@s uk-align-center">
             <article class="uk-article">
                 <h2 class="uk-article-title">Unix Filters</h2>
                 <p class="uk-article-meta">Written on 10 June 2019</p>
@@ -47,76 +45,83 @@
                         </ul>
                     </li>
                     <li>cut: vertical slice</li>
-                    <li>paste: combine files</li>
+                        <ul class="uk-list uk-list-bullet">
+                            <li><code>-fListOfColumns</code> e.g. <code>-f1-3</code>,<code>-f1,4</code></li>
+                            <li><code>-cListOfPositions</code> e.g. <code>-c1-5</code></li>
+                            <li><code>-d'c'</code> c is the field seperator</li>
+                        </ul>
+                    <li>paste: combine files e.g. <code>paste data1 data2 data3 &gt; newdata</code></li>
                     <li>join: database operator</li>
-                    <li>sort: </li>
-                    <li>uniq: remove or count duplicates</li>
-                    <li>xargs: commands with arguments from standard input</li>
-                    <li>sed: stream editor</li>
-                    <li>find: file search</li>
+                    <li>sort</li>
+                    <li>uniq: remove and/or count duplicates</li>
+                    <li>xargs: commands with arguments from standard input <code>grep keyword /file/directory | cut -f1 | xargs rm -r</code></li>
+                    <li>sed: stream editor. Editing commands qualified by line number or line selector patterns. E.g. <code>sed -options '1,10p' &lt; file</code> or <code>sed -options '/RegExp1/,/RegExp2/' &lt; file</code></li>
+                    <li>find: file search. E.g. <code>find Directory Tests Actions</code></li>
                 </ul>
 
             </article>
         </div>
 
-    <div class="uk-card uk-card-default uk-card-large uk-card-body uk-width-2-3@m uk-width-5-6 uk-align-center">
-        <article class="uk-article">
-            <h2 class="uk-article-title">Input/Output Functions</h2>
-            <p class="uk-article-meta">Written on 10 June 2019</p>
-            <p>In the first week I explored the use of input/output functions. By making a simple <code>cat</code> like function using different i/o functions in the standard i/o library. I got more familiar with use of the Unix Programmer manual, the COMP1521 workflow and simple performance analysis.</p>
-            <q>Unix/Linux has a large number of useful commands which act as filters and read an input byte- or character-stream, and copy it to an output byte- or character-stream, generally with some changes.</q>
-            <br/><br/>
-            <q>The simplest filter is the cat(1) command, which is effectively the identity filter: it copies standard input to standard output, without making any changes at all</q>
+        <div class="uk-card uk-card-default uk-card-large uk-card-body uk-width-2-3@m uk-width-5-6@s uk-align-center">
+            <article class="uk-article">
+                <h2 class="uk-article-title">Input/Output Functions</h2>
+                <p class="uk-article-meta">Written on 10 June 2019</p>
+                <p>In the first week I explored the use of input/output functions. By making a simple <code>cat</code> like function using different i/o functions in the standard i/o library. I got more familiar with use of the Unix Programmer manual, the COMP1521 workflow and simple performance analysis.</p>
+                <q>Unix/Linux has a large number of useful commands which act as filters and read an input byte- or character-stream, and copy it to an output byte- or character-stream, generally with some changes.</q>
+                <br/><br/>
+                <q>The simplest filter is the cat(1) command, which is effectively the identity filter: it copies standard input to standard output, without making any changes at all</q>
 
-            <p class="uk-text-bold">Implementation</p>
+                <p class="uk-text-bold">Implementation</p>
 
-            <p>For the first three, I used while loops to iterate through the file object until end of file and wrote to standard output with the appropriate functions.</p>
+                <p>For the first three, I used while loops to iterate through the file object until end of file and wrote to standard output with the appropriate functions.</p>
 
-            <p>Using <code>fscanf</code> and <code>fprintf</code></p>
-            
-            <pre class="c" style="font-family:monospace;"><span style="color: #b1b100;">while</span> <span style="color: #009900;">&#40;</span><span style="color: #000066;">fscanf</span><span style="color: #009900;">&#40;</span>input<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;%c&quot;</span><span style="color: #339933;">,</span> <span style="color: #339933;">&amp;</span>i<span style="color: #009900;">&#41;</span> <span style="color: #339933;">!=</span> EOF <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-    <span style="color: #000066;">fprintf</span><span style="color: #009900;">&#40;</span>output<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;%c&quot;</span><span style="color: #339933;">,</span> i<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span></pre>
+                <p>Using <code>fscanf</code> and <code>fprintf</code></p>
+                
+                <pre class="c" style="font-family:monospace;"><span style="color: #b1b100;">while</span> <span style="color: #009900;">&#40;</span><span style="color: #000066;">fscanf</span><span style="color: #009900;">&#40;</span>input<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;%c&quot;</span><span style="color: #339933;">,</span> <span style="color: #339933;">&amp;</span>i<span style="color: #009900;">&#41;</span> <span style="color: #339933;">!=</span> EOF <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000066;">fprintf</span><span style="color: #009900;">&#40;</span>output<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;%c&quot;</span><span style="color: #339933;">,</span> i<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span></pre>
 
-            <p>Using <code>fgetc</code> and <code>fputc</code></p>
-            
-<pre class="c" style="font-family:monospace;"><span style="color: #993333;">char</span> i <span style="color: #339933;">=</span> <span style="color: #000066;">fgetc</span><span style="color: #009900;">&#40;</span>input<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #b1b100;">while</span> <span style="color: #009900;">&#40;</span>i <span style="color: #339933;">!=</span> EOF<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-    <span style="color: #000066;">fputc</span><span style="color: #009900;">&#40;</span>i<span style="color: #339933;">,</span> output<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    i <span style="color: #339933;">=</span> <span style="color: #000066;">fgetc</span><span style="color: #009900;">&#40;</span>input<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span></pre>
+                <p>Using <code>fgetc</code> and <code>fputc</code></p>
+                
+    <pre class="c" style="font-family:monospace;"><span style="color: #993333;">char</span> i <span style="color: #339933;">=</span> <span style="color: #000066;">fgetc</span><span style="color: #009900;">&#40;</span>input<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #b1b100;">while</span> <span style="color: #009900;">&#40;</span>i <span style="color: #339933;">!=</span> EOF<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000066;">fputc</span><span style="color: #009900;">&#40;</span>i<span style="color: #339933;">,</span> output<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        i <span style="color: #339933;">=</span> <span style="color: #000066;">fgetc</span><span style="color: #009900;">&#40;</span>input<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span></pre>
 
-            <p>Using <code>fgets</code> and <code>fputs</code></p>
+                <p>Using <code>fgets</code> and <code>fputs</code></p>
 
-<pre class="c" style="font-family:monospace;"><span style="color: #993333;">char</span> string<span style="color: #009900;">&#91;</span>BUFSIZ<span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span>
-<span style="color: #b1b100;">while</span> <span style="color: #009900;">&#40;</span><span style="color: #000066;">fgets</span><span style="color: #009900;">&#40;</span>string<span style="color: #339933;">,</span> BUFSIZ<span style="color: #339933;">,</span> input<span style="color: #009900;">&#41;</span> <span style="color: #339933;">!=</span> NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-    <span style="color: #000066;">fputs</span><span style="color: #009900;">&#40;</span>string<span style="color: #339933;">,</span> output<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span></pre>
+    <pre class="c" style="font-family:monospace;"><span style="color: #993333;">char</span> string<span style="color: #009900;">&#91;</span>BUFSIZ<span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span>
+    <span style="color: #b1b100;">while</span> <span style="color: #009900;">&#40;</span><span style="color: #000066;">fgets</span><span style="color: #009900;">&#40;</span>string<span style="color: #339933;">,</span> BUFSIZ<span style="color: #339933;">,</span> input<span style="color: #009900;">&#41;</span> <span style="color: #339933;">!=</span> NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000066;">fputs</span><span style="color: #009900;">&#40;</span>string<span style="color: #339933;">,</span> output<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span></pre>
 
-            <p>I was quite lucky that my first tests using <code>time</code> showed that <code>cat3.c</code> was the fastest, because I didn't double check the result. The results of <code>time</code> can vary so when you do performance analysis in general you should have a decently large same size of times. So all that was left of <code>cat4.c</code> was to write a <code>main</code> function that reads command line arguments.</p>
+                <p>I was quite lucky that my first tests using <code>time</code> showed that <code>cat3.c</code> was the fastest, because I didn't double check the result. The results of <code>time</code> can vary so when you do performance analysis in general you should have a decently large sample size of times. So all that was left of <code>cat4.c</code> was to write a <code>main</code> function that reads command line arguments.</p>
 
-<pre class="c" style="font-family:monospace;"><span style="color: #993333;">int</span> main <span style="color: #009900;">&#40;</span><span style="color: #993333;">int</span> argc<span style="color: #339933;">,</span> <span style="color: #993333;">char</span> <span style="color: #339933;">*</span>argv<span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-    <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>argc <span style="color: #339933;">==</span> <span style="color: #0000dd;">1</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-        copy <span style="color: #009900;">&#40;</span>stdin<span style="color: #339933;">,</span> stdout<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-    <span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
-        <span style="color: #b1b100;">for</span> <span style="color: #009900;">&#40;</span><span style="color: #993333;">int</span> i <span style="color: #339933;">=</span> <span style="color: #0000dd;">1</span><span style="color: #339933;">;</span> i <span style="color: #339933;">&lt;</span> argc<span style="color: #339933;">;</span> i<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-            FILE <span style="color: #339933;">*</span>temp <span style="color: #339933;">=</span> <span style="color: #000066;">fopen</span><span style="color: #009900;">&#40;</span>argv<span style="color: #009900;">&#91;</span>i<span style="color: #009900;">&#93;</span><span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;r&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-            <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>temp <span style="color: #339933;">!=</span> NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-                copy<span style="color: #009900;">&#40;</span>temp<span style="color: #339933;">,</span> stdout<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-                <span style="color: #000066;">fclose</span><span style="color: #009900;">&#40;</span>temp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-            <span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
-                <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;Can't read %s<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">,</span> argv<span style="color: #009900;">&#91;</span>i<span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <pre class="c" style="font-family:monospace;"><span style="color: #993333;">int</span> main <span style="color: #009900;">&#40;</span><span style="color: #993333;">int</span> argc<span style="color: #339933;">,</span> <span style="color: #993333;">char</span> <span style="color: #339933;">*</span>argv<span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>argc <span style="color: #339933;">==</span> <span style="color: #0000dd;">1</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+            copy <span style="color: #009900;">&#40;</span>stdin<span style="color: #339933;">,</span> stdout<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
+            <span style="color: #b1b100;">for</span> <span style="color: #009900;">&#40;</span><span style="color: #993333;">int</span> i <span style="color: #339933;">=</span> <span style="color: #0000dd;">1</span><span style="color: #339933;">;</span> i <span style="color: #339933;">&lt;</span> argc<span style="color: #339933;">;</span> i<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                FILE <span style="color: #339933;">*</span>temp <span style="color: #339933;">=</span> <span style="color: #000066;">fopen</span><span style="color: #009900;">&#40;</span>argv<span style="color: #009900;">&#91;</span>i<span style="color: #009900;">&#93;</span><span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;r&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>temp <span style="color: #339933;">!=</span> NULL<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                    copy<span style="color: #009900;">&#40;</span>temp<span style="color: #339933;">,</span> stdout<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                    <span style="color: #000066;">fclose</span><span style="color: #009900;">&#40;</span>temp<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                <span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
+                    <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;Can't read %s<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">,</span> argv<span style="color: #009900;">&#91;</span>i<span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                <span style="color: #009900;">&#125;</span>
             <span style="color: #009900;">&#125;</span>
         <span style="color: #009900;">&#125;</span>
-    <span style="color: #009900;">&#125;</span>
-    <span style="color: #b1b100;">return</span> EXIT_SUCCESS<span style="color: #339933;">;</span>
-<span style="color: #009900;">&#125;</span></pre>
+        <span style="color: #b1b100;">return</span> EXIT_SUCCESS<span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span></pre>
 
-            <p class="uk-text-bold">Testing</p>
+                <p class="uk-text-bold">Testing</p>
 
-            <p>I used the <code>make</code> utility instead of compiling with <code>dcc</code> or <code>gcc</code> and using the <code>check</code> script instead of the <code>autotest</code> script.</p>
+                <p>I used the <code>make</code> utility instead of compiling with <code>dcc</code> or <code>gcc</code> and using the <code>check</code> script instead of the <code>autotest</code> script.</p>
 
-        </article>
+            </article>
+        </div>
     </div>
+    <a class="uk-margin-left uk-margin-bottom uk-margin-top" uk-totop uk-scroll></a>
 </body>
 </html>
