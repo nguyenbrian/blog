@@ -10,15 +10,15 @@
  */
 html {
   /* 1 */
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: "Karla", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 16px;
   font-weight: normal;
   line-height: 1.5;
   /* 2 */
   -webkit-text-size-adjust: 100%;
   /* 3 */
-  background: #fff;
-  color: #666;
+  background: #121212;
+  color: #ffffff;
 }
 /*
  * Remove the margin in all browsers.
@@ -93,7 +93,7 @@ strong {
   color: #f0506e;
   white-space: nowrap;
   padding: 2px 6px;
-  background: #f8f8f8;
+  background: #3c3c3c;
 }
 /*
  * Emphasize
@@ -247,9 +247,9 @@ h6,
 .uk-heading-xlarge,
 .uk-heading-2xlarge {
   margin: 0 0 20px 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: "Rubik", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: normal;
-  color: #333;
+  color: #ffffff;
   text-transform: none;
 }
 /* Add margin if adjacent element */
@@ -2923,16 +2923,18 @@ select.uk-form-width-xsmall {
  * Note: Header and Footer are only implemented for the default style
  */
 .uk-card-default {
-  background: #fff;
-  color: #666;
+  background: #272727;
+  color: #ffffff;
+  opacity: 87%;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  border-radius: 15px;
 }
 .uk-card-default .uk-card-title {
   color: #333;
 }
 .uk-card-default.uk-card-hover:hover {
-  background-color: #fff;
-  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
+  background-color: #272727;
+  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.25);
 }
 .uk-card-default .uk-card-header {
   border-bottom: 1px solid #e5e5e5;
@@ -3150,18 +3152,20 @@ select.uk-form-width-xsmall {
  */
 .uk-totop {
   padding: 5px;
-  color: #999;
+  color: #ffffff;
   transition: color 0.1s ease-in-out;
 }
 /* Hover + Focus */
 .uk-totop:hover,
 .uk-totop:focus {
-  color: #666;
+  color: #ffffff;
+  opacity: 80%;
   outline: none;
 }
 /* OnClick */
 .uk-totop:active {
-  color: #333;
+  color: #ffffff;
+  opacity: 60%;
 }
 /* ========================================================================
    Component: Marker
@@ -3414,8 +3418,10 @@ select.uk-form-width-xsmall {
 .uk-article-meta {
   font-size: 0.875rem;
   line-height: 1.4;
-  color: #999;
+  color: #ffffff;
+  opacity: 60%;
 }
+
 .uk-article-meta a {
   color: #999;
 }
